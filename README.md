@@ -3,7 +3,7 @@ This repository contains code scripts for data generation and machine learning o
 
 ------------------------------------------------------------------------
 
-...additions: script for people to test acyclicity; computer-assissted proof.
+Additions: script for people to test mutation-acyclicity; computer-assissted proof.
 
 ------------------------------------------------------------------------
 # BibTeX Citation
