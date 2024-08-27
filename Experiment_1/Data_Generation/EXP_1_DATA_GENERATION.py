@@ -1,3 +1,6 @@
+'''
+Script to generate mutation classes of quivers, saving their outputs as adjacency matrices in separate txt files.
+'''
 import numpy as np
 import datetime
 from sage.all import * 
@@ -23,24 +26,11 @@ class Sequence_Iteration:
             raise StopIteration  #Stops the iteration if we reach the end of the list
 
 
-   
-    
-
-
-    
-
-
-    
-
 def CLASS_DATA_Generation(intial_quiver, depth): 
     '''Generates mutated quivers from an intial quiver up to some depth
     Input: An intial Quiver from Sage Maths
     Output:A list of mutated Quivers generated from the intial quiver up to depth "depth".
-    '''
-    
-    
-    ########################################
-    
+    '''    
     output_list = []
     for dd in Sequence_Iteration(list(range(0,depth))): # Runs over each depth we wish to consider
        
@@ -71,29 +61,15 @@ def CLASS_DATA_Generation(intial_quiver, depth):
                 for h in Sequence_Iteration(vertex_list_copy):#Runs over mutations over each vertex 'h'
                     newquiver = qs.mutate(h,inplace=False) #mutates the quiver at vertex h to give a new quiver  
                     output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run. 
-                    
-                
-                
-              
-
-  
-                         
+                                     
             beginning_of_run = end_of_run+1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
             end_of_run = len(output_list) - 1 
                           
                        
         print('Number of Quivers:',len(output_list))
-    
-    #######################################################################
     print('Output_list_length:',len(output_list))
-
    
     return output_list
-      
-  
-       
-   
-
 
 
 def array_converter(matrix1): 
@@ -107,6 +83,7 @@ def array_converter(matrix1):
     arraynew = arraynewp1.astype('float64')   
     return arraynew.tolist()  
 
+
 def liststripper(lists):
     '''Removes the square brackets from flatten 1-D arrays which have already been converted to lists.
        INPUT: 1-D PYTHON ARRAY
@@ -116,6 +93,7 @@ def liststripper(lists):
     list_string_v2 = list_string.replace('[','') 
     list_string_v3 = list_string_v2.replace(']','')
     return list_string_v3
+
 
 def file_names(types='A4_'):
     """
@@ -135,8 +113,6 @@ def file_names(types='A4_'):
     SYSTEM_TIME = "2024-07_00-01-00"    
     OUTPUT = "A4_2024_07_00_01_00"
     """
-
-
  
     # Get the current date and time from operating system
     current_datetime = datetime.datetime.now()
@@ -146,7 +122,6 @@ def file_names(types='A4_'):
     file_name = file_name_part_1 
  
     return file_name
-
 
 
 def data_writer_A4(data,name): 
@@ -316,10 +291,9 @@ def exchangematrix(setting,a=1,b=1,c=1,d=1):
     
     return matrix(bij)   
 
-
+#########################################################################################
 # Data Generation
-
-## Intial Data Generation
+# Define the starting quivers
 
 #A4 Quiver Starting Graph type 1
 
@@ -359,12 +333,9 @@ non_acyclic_2 = ClusterSeed(non_acyclic_2_data).quiver()
 
 
 #########################################################################################
-###########################################################################################
-
+# Generate the mutation classes
 
 depth_max = 8 #DATA GENERATION DEPTH
-
-
 
 #A4 Quiver Data Generation
 print('A4 Quiver Data Generation')
@@ -381,7 +352,6 @@ a4_data_a = np.array(a4_data)
 a4_data = a4_data_a[:,0].flatten()
 print('A4_LENGTH', len(a4_data))
 
-
 data_writer_A4(a4_data, name='A4_Extended_FULL')
 
 
@@ -394,14 +364,13 @@ d4_data_2 = CLASS_DATA_Generation(d4_graph_2,depth=depth_max)
 d4_data = np.array(d4_data_1+d4_data_2)
 d4_data_final = d4_data[:,0].flatten()
 
-
-
 data_writer_D4(d4_data_final, name='D4_Extended_FULL')
 
 
 #NONACYCLIC1 DATA GENERATION
 print('Non-Acyclic 1 Data Generation')
 nonacyclic1_data = np.array(CLASS_DATA_Generation(non_acyclic_1,depth = depth_max))[:,0].flatten()
+
 data_writer_NONACYCLIC_1(nonacyclic1_data,name='NONACYCLIC1_Extended_FULL')
 
 
@@ -413,8 +382,4 @@ data_writer_NONACYCLIC_2(nonacyclic2_data,name='NONACYCLIC2_Extended_FULL')
 
 
 print('END OF PROGRAM')
-
-
-
-
 

@@ -1,3 +1,7 @@
+'''
+Script to exhaustively generate quivers with edge multiplicity < 3.
+'''
+# Import libraries
 import numpy as np
 from sage.all import *
 from math import comb
@@ -9,7 +13,7 @@ import itertools
 import graph_tool as gt 
 from graph_tool.all import *
 
-
+# Define appropriate functions
 class Sequence_Iteration:
     ''' 
     A class which iterates over a list 
@@ -28,8 +32,6 @@ class Sequence_Iteration:
             return list_attr 
         else: 
             raise StopIteration  
-
-
 
 
 def exchangematrix(setting,a=1,b=1,c=1,d=1,e=1,f=1):
@@ -63,6 +65,7 @@ def exchangematrix(setting,a=1,b=1,c=1,d=1,e=1,f=1):
     
     return matrix(bij)    
 
+
 def edge_list_creator(quiver): 
     '''
        Creates a (from a sage math quiver) Graph Tool Graph
@@ -88,7 +91,6 @@ def edge_list_creator(quiver):
 
 #################################################################################################
 # NON ACYCLIC QUIVER GENERATION
-#
 ################################################################################################
 
 non_acyclic_1a1_data = exchangematrix('NONACYCLIC1A',a=2,b=2,c=2,d=2)
@@ -302,9 +304,7 @@ non_acyclic_4a8b = ClusterSeed(non_acyclic_4a8b_data).quiver()
 non_acyclic_4a8c_data = exchangematrix('NONACYCLIC3',a=2,b=2,c=2,d=0,e=2,f=1)
 non_acyclic_4a8c = ClusterSeed(non_acyclic_4a8c_data).quiver()
 
-
-
-
+# Concatenate the lists
 non_acyclic_list = [non_acyclic_1a1,non_acyclic_1a2,non_acyclic_1a3, non_acyclic_1b1,non_acyclic_1b2,non_acyclic_1b3,non_acyclic_1c1,non_acyclic_1c2,non_acyclic_1c3,non_acyclic_1d1,non_acyclic_1d2,non_acyclic_1d3,non_acyclic_2,non_acyclic_3a1,non_acyclic_3a2,non_acyclic_3b1,non_acyclic_3b2,non_acyclic_3c1a,non_acyclic_3c1b,non_acyclic_3c1c,non_acyclic_3c2a,non_acyclic_3c2b,non_acyclic_3c2c,non_acyclic_3d1a,non_acyclic_3d1b,non_acyclic_3d1c,non_acyclic_3d2a,non_acyclic_3d2b,non_acyclic_3d2c,non_acyclic_4a1a,
                    non_acyclic_4a1b,non_acyclic_4a1c,non_acyclic_4a2a,
                    non_acyclic_4a2b,non_acyclic_4a2c,non_acyclic_4a3a,
@@ -339,6 +339,7 @@ def array_converter(matrix1):
     arraynew = arraynewp1.astype('float64')   
     return arraynew.tolist()  
 
+
 def liststripper(lists):
     '''Removes the square brackets from flatten 1-D arrays which have already been converted to lists.
        INPUT: 1-D PYTHON ARRAY
@@ -349,8 +350,9 @@ def liststripper(lists):
     list_string_v3 = list_string_v2.replace(']','')
     return list_string_v3
 
+
 def file_names(types='A4_'):
-    """
+    '''
     A file name is produced using the current date and time.
 
     INPUT: STRING - The file name wanted for the output file.
@@ -366,10 +368,7 @@ def file_names(types='A4_'):
     INPUT: "A4"
     SYSTEM_TIME = "2024-07_00-01-00"    
     OUTPUT = "A4_2024_07_00_01_00"
-    """
-
-
- 
+    ''' 
     # Get the current date and time from operating system
     current_datetime = datetime.datetime.now()
  
@@ -378,7 +377,6 @@ def file_names(types='A4_'):
     file_name = file_name_part_1 
  
     return file_name 
-
 
 
 def data_writer(data,name): 
@@ -394,9 +392,6 @@ def data_writer(data,name):
         string_output = liststripper(toprint)
         save_file.write(string_output+'\n')    
     save_file.close() 
-
-
-
 
 
 def cluster_generator(max_legs = 2):
@@ -460,15 +455,13 @@ def array_exchange_matrices_sage(input_list):
     return output_list    
 
 
-
+# Generate the dataset
 lists = cluster_generator(max_legs = 2)
 
 #SAVING THE ENTIRE DATA SET 
 
 ALL_DATA = [x.b_matrix() for x in lists]
 data_writer(ALL_DATA,'Fourth_Experiment_Full_data')
-
-
 
 #Converts all the quivers in the non_acyclic_list to graph tool (gt) quivers
 iso_killer = [edge_list_creator(x) for x in Sequence_Iteration(non_acyclic_list)]
@@ -497,33 +490,23 @@ def iso_finder(quivers,list_to_compare):
 
 get_rid = iso_finder(lists,iso_killer)
 
-
 list_array = np.array(lists)
 
 #Gets rid of all the Non-mutation acyclic (NMA) quivers from the data set to give the Mutation acyclic (MA) dataset 
 non_nma_list = np.delete(list_array,get_rid)
 non_nma_list = non_nma_list.tolist()
 
-
 #NMA List
 nma_list = list_array[get_rid]
 nma_list = nma_list.tolist()
 
-
 new_nma_list = [x.b_matrix() for x in nma_list]
-
-
 data_writer(new_nma_list,'Fourth_Experiment_NMA_data')#Saves NMA quivers to a .txt file
 
 
 new_non_nma_list = [x.b_matrix() for x in non_nma_list]
-
-
 data_writer(new_non_nma_list,'Fourth_Experiment_MA_data')#Saves data set with all the MA quivers to a .txt file
 
 
 print('-'*20,'FINISHED PROGRAM','-'*20)
-
-
-
 

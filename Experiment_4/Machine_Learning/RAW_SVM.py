@@ -1,3 +1,7 @@
+'''
+Script to learn mutation-acyclicity of quivers (using their adjacency upper triangular representation), via support vector machines.
+'''
+# Import libraries
 import numpy as np
 from sage.all import * 
 from sklearn import svm
@@ -5,9 +9,7 @@ from matplotlib import pyplot as plt
 from itertools import combinations 
 from sklearn.metrics import matthews_corrcoef
 
-
-
-
+# Define appropriate functions
 class Sequence_Iteration:
     ''' 
     A class which iterates over a list 
@@ -44,7 +46,6 @@ def data_reading_exchange_matrix(file_name_exchange):
         data.append(string_list)   
     em.close()    
     return data     
-
 
 
 def exchangematrix(setting,a=1,b=1,c=1,d=1,e=1,f=1):
@@ -103,14 +104,12 @@ def listtoquiver(l):
     return output
 
 
+# Import data
 full_data = data_reading_exchange_matrix('Fourth_Experiment_Full_data.txt')
-
-
 NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_NMA_data.txt')
-
-
 NON_NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_MA_data.txt')
 
+# Output data sizes
 print(len(full_data))
 print(len(NMA_DATA))
 print(len(NON_NMA_DATA))
@@ -118,7 +117,6 @@ print(len(NON_NMA_DATA+NMA_DATA))
 
 
 ex1= full_data[1]
-
 
 def components_finder_6(lists):
     '''
@@ -135,36 +133,23 @@ def components_finder_6(lists):
 
 NON_NMA_DATA_NEW =components_finder_6(NON_NMA_DATA)
 NMA_DATA_NEW = components_finder_6(NMA_DATA)
-
-
-NMA_DATA_NEW[0]
-
  
-# # Support Vector Machine
-
-
+#################################################################################
+# Support Vector Machine
 full_data_removed = NON_NMA_DATA_NEW   #removed NMA Quivers.
-
-
 seed_random = 30
-
 
 # Class Builders 
 not_nma_class = np.full(len(NON_NMA_DATA_NEW),-1)
 nma_class = np.full(len(NMA_DATA_NEW),1)
-
-
 cutoff_value = len(nma_class)
-
 
 s_data = np.concatenate((NON_NMA_DATA_NEW,NMA_DATA_NEW))
 s_class = np.concatenate((not_nma_class,nma_class))
 print(s_data.shape)
 
-
 s_data_2 = np.copy(s_data)
 s_class_2 = np.copy(s_class)
-
 
 np.random.seed(seed_random)
 np.random.shuffle(s_data)
@@ -174,13 +159,6 @@ np.random.seed(seed_random)
 np.random.shuffle(s_data_2) 
 np.random.seed(seed_random)
 np.random.shuffle(s_class_2)
-
-
-
-
-
-
-
 
 def equation_writer(equation,svm_polynomial_number): 
     '''
@@ -233,28 +211,20 @@ def Polynomial_Length(expression,MC,SVM_DEGREE):
     return length
 
 
-
-
 proportion = float(len(NON_NMA_DATA_NEW)/len(NMA_DATA_NEW))
 
-
+# Define and fit the SVM
 svm_degree = 6
 clf_6 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-
-
 clf_6.fit(s_data,s_class)
-
 
 clf_6.get_params(deep=True)
 df = clf_6.decision_function(s_data)
 rang = np.arange(0,len(df))
 
-
 plt.figure()
-
 plt.scatter(rang,df)
 plt.scatter(rang[14682:15104],df[14682:15104])
-
 
 np.random.seed(seed_random)
 np.random.shuffle(rang)
@@ -263,18 +233,16 @@ plt.figure()
 plt.scatter(rang,df)
 plt.scatter(x_rnt,df[14682:15104])
 
-
+# Test the SVM
 tests = clf_6.predict(s_data) == s_class 
 print(len(tests))
 print(tests)
 r = np.where(tests == True)[0] 
 print(len(r))
 
-
 #Matthew 
 matt_poly_6 = matthews_corrcoef(s_class,clf_6.predict(s_data))
 print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_6))
-
 
 #Print the number of support vectors:
 print(f'Number of Support Vectors: {clf_6.n_support_}')
@@ -288,8 +256,6 @@ gamma = 1./(s_data.var()*input_dim)
 def DecisionFunction(InputVector):
     return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
-
-
 #Define the generic input variables
 input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e') 
@@ -300,18 +266,12 @@ print('INTERCEPT IS:',intercept)
 equation = 1e3*( sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)
 print(equation.expand())      
 
-
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_6,svm_degree)
 
-
 svm_degree = 5
 clf_5 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-
 clf_5.fit(s_data,s_class)
-
-
-
 
 input_dim = 6
 
@@ -342,7 +302,6 @@ equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_5,svm_degree)
 
-
 svm_degree = 4
 clf_4 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
 #clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
@@ -350,9 +309,6 @@ clf_4 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:p
 clf_4.fit(s_data,s_class)
 
 #rng = np.random.default_rng()
-
-
-
 
 #Matthew 
 matt_poly_4 = matthews_corrcoef(s_class,clf_4.predict(s_data))
@@ -380,17 +336,11 @@ equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_4,svm_degree)
 
-
 svm_degree = 3
 clf_3 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
 #clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
-
 clf_3.fit(s_data,s_class)
-
 #rng = np.random.default_rng()
-
-
-
 
 #Matthew 
 matt_poly_3 = matthews_corrcoef(s_class,clf_3.predict(s_data))
@@ -419,17 +369,11 @@ equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_3,svm_degree)
 
-
 svm_degree = 2
 clf_2 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
 #clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
-
 clf_2.fit(s_data,s_class)
-
 #rng = np.random.default_rng()
-
-
-
 
 #Matthew 
 matt_poly_2 = matthews_corrcoef(s_class,clf_2.predict(s_data))
@@ -456,16 +400,9 @@ equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_2,svm_degree)
 
-
 svm_degree = 1
 clf_1 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-
 clf_1.fit(s_data,s_class)
-
-
-
-
-
 
 #Matthew 
 matt_poly_1 = matthews_corrcoef(s_class,clf_1.predict(s_data))
@@ -492,8 +429,4 @@ symbolic_input = var('e', n=input_dim, latex_name='e')
 equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_1,svm_degree)
-
-
-
-
 
