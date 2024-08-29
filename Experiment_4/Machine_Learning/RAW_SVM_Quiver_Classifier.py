@@ -230,7 +230,10 @@ def Quiver_Decider(quiver,svm_classifer):
     a pretrained support vector machine (SVM). 
     INPUT: (1) SAGE MATH Quiver
            (2) Scikit Learn *trained* svm_classifer
-    OUTPUT: 
+    OUTPUT: Function returns type "None", but will print out to the console the string:
+     "Quiver is {}", where {} can be:
+     -Mutation Acyclic
+     -Non Mutation Acyclic
     '''
     #Obtains Quiver's exchange matrix and converts it to a python list
     b_matrix_list = array_converter(quiver.b_matrix())
