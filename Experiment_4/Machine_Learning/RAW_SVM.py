@@ -105,10 +105,9 @@ def listtoquiver(l):
 
 
 # Import data
-full_data = data_reading_exchange_matrix('Fourth_Experiment_Full_data.txt')
 NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_NMA_data.txt')
 NON_NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_MA_data.txt')
-
+full_data = NMA_DATA + NON_NMA_DATA
 # Output data sizes
 print(len(full_data))
 print(len(NMA_DATA))
@@ -298,17 +297,15 @@ symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
 equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e15
-#print(equation.full_simplify())       
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_5,svm_degree)
 
 svm_degree = 4
 clf_4 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-#clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
 
 clf_4.fit(s_data,s_class)
 
-#rng = np.random.default_rng()
+
 
 #Matthew 
 matt_poly_4 = matthews_corrcoef(s_class,clf_4.predict(s_data))
@@ -338,9 +335,7 @@ Polynomial_Length(equation,matt_poly_4,svm_degree)
 
 svm_degree = 3
 clf_3 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-#clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
 clf_3.fit(s_data,s_class)
-#rng = np.random.default_rng()
 
 #Matthew 
 matt_poly_3 = matthews_corrcoef(s_class,clf_3.predict(s_data))
@@ -365,15 +360,13 @@ symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
 equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14
-#print(equation.full_simplify())
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_3,svm_degree)
 
 svm_degree = 2
 clf_2 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
-#clf = make_pipeline(StandardScaler(),clfp ) #ONLY WORKS USING POLY and C=1000 class_weight='{-1:1,1:30}', Polynomial is of degree 6
 clf_2.fit(s_data,s_class)
-#rng = np.random.default_rng()
+
 
 #Matthew 
 matt_poly_2 = matthews_corrcoef(s_class,clf_2.predict(s_data))

@@ -304,6 +304,10 @@ non_acyclic_4a8b = ClusterSeed(non_acyclic_4a8b_data).quiver()
 non_acyclic_4a8c_data = exchangematrix('NONACYCLIC3',a=2,b=2,c=2,d=0,e=2,f=1)
 non_acyclic_4a8c = ClusterSeed(non_acyclic_4a8c_data).quiver()
 
+#Dread Torus Inclusion: 
+non_acyclic_dreaded_data=  matrix([[0,1,1,-1],[-1,0,-1,2],[-1,1,0,-1],[1,-2,1,0]])
+non_acyclic_dreaded = ClusterSeed(non_acyclic_dreaded_data).quiver()
+
 # Concatenate the lists
 non_acyclic_list = [non_acyclic_1a1,non_acyclic_1a2,non_acyclic_1a3, non_acyclic_1b1,non_acyclic_1b2,non_acyclic_1b3,non_acyclic_1c1,non_acyclic_1c2,non_acyclic_1c3,non_acyclic_1d1,non_acyclic_1d2,non_acyclic_1d3,non_acyclic_2,non_acyclic_3a1,non_acyclic_3a2,non_acyclic_3b1,non_acyclic_3b2,non_acyclic_3c1a,non_acyclic_3c1b,non_acyclic_3c1c,non_acyclic_3c2a,non_acyclic_3c2b,non_acyclic_3c2c,non_acyclic_3d1a,non_acyclic_3d1b,non_acyclic_3d1c,non_acyclic_3d2a,non_acyclic_3d2b,non_acyclic_3d2c,non_acyclic_4a1a,
                    non_acyclic_4a1b,non_acyclic_4a1c,non_acyclic_4a2a,
@@ -313,7 +317,7 @@ non_acyclic_list = [non_acyclic_1a1,non_acyclic_1a2,non_acyclic_1a3, non_acyclic
                    non_acyclic_4a5b,non_acyclic_4a5c,non_acyclic_4a6a,
                    non_acyclic_4a6b,non_acyclic_4a6c,non_acyclic_4a7a,
                    non_acyclic_4a7b,non_acyclic_4a7c,non_acyclic_4a8a,
-                   non_acyclic_4a8b,non_acyclic_4a8c]
+                   non_acyclic_4a8b,non_acyclic_4a8c,non_acyclic_dreaded]
 
 
 def rank4genm(a=1,b=1,c=1,d=1,e=1,f=1):
@@ -467,6 +471,9 @@ data_writer(ALL_DATA,'Fourth_Experiment_Full_data')
 iso_killer = [edge_list_creator(x) for x in Sequence_Iteration(non_acyclic_list)]
 
 
+#Converts the Dreaded Torus Quiver to a graph tool (gt) quiver
+iso_killer_Dreaded = [edge_list_creator(x) for x in Sequence_Iteration([non_acyclic_dreaded])]
+
 def iso_finder(quivers,list_to_compare): 
     '''
     INPUT 1: LIST OF SAGE MATH QUIVERS 
@@ -490,17 +497,29 @@ def iso_finder(quivers,list_to_compare):
 
 get_rid = iso_finder(lists,iso_killer)
 
+
+#Finds all the dreaded torus quivers in our data_set
+get_rid_torus = iso_finder(lists,iso_killer_Dreaded)
+print('Number_of_Isomorphims to Dreaded: ',len(get_rid_torus))#Prints Number of Dreaded Torus Quivers in full dataset
+
+#Converts all data to an array
 list_array = np.array(lists)
 
 #Gets rid of all the Non-mutation acyclic (NMA) quivers from the data set to give the Mutation acyclic (MA) dataset 
 non_nma_list = np.delete(list_array,get_rid)
 non_nma_list = non_nma_list.tolist()
+print('-'*20,'Finshed MA','-'*20)
 
 #NMA List
-nma_list = list_array[get_rid]
-nma_list = nma_list.tolist()
+Torus_Removed_List = np.delete(list_array,get_rid_torus) 
+nma_location = iso_finder(Torus_Removed_List.tolist(),iso_killer) 
+nma_array = Torus_Removed_List[nma_location]
+nma_list = nma_array.tolist()
+print('-'*20,'FINISHED NMA','-'*20)
 
+#Converts NMA Quivers to their exchange matrices (TYPE: SAGE MATH MATRIX)
 new_nma_list = [x.b_matrix() for x in nma_list]
+
 data_writer(new_nma_list,'Fourth_Experiment_NMA_data')#Saves NMA quivers to a .txt file
 
 

@@ -106,10 +106,9 @@ def listtoquiver(l):
 
 
 # Import the data
-full_data = data_reading_exchange_matrix('Fourth_Experiment_Full_data.txt')
 NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_NMA_data.txt')
 NON_NMA_DATA = data_reading_exchange_matrix('Fourth_Experiment_MA_data.txt')
-
+full_data = NMA_DATA+NON_NMA_DATA
 # Output dataset sizes
 print(len(full_data))
 print(len(NMA_DATA))
@@ -193,7 +192,7 @@ Third_data = np.round(all_data_pca[:,2],decimals=point_number)
 Third_direction_unique_entries = np.round(Third_data,decimals=3)
 Third_direction_unique_counts = np.unique(Third_data,return_counts=True)
 counts, bins = np.histogram(Third_direction_unique_entries)
-#print(second_direction_unique_counts)
+
 
 plt.figure()
 plt.title('Third Direction Histogram')
@@ -205,7 +204,7 @@ Fourth_data = np.round(all_data_pca[:,3],decimals=point_number)
 Fourth_direction_unique_entries = np.round(Fourth_data,decimals=3)
 Fourth_direction_unique_counts = np.unique(Fourth_data,return_counts=True)
 counts, bins = np.histogram(Fourth_direction_unique_entries)
-#print(Fourth_direction_unique_counts)
+
 
 plt.figure()
 plt.title('Fourth Direction Histogram')
@@ -217,7 +216,7 @@ Fifth_data = np.round(all_data_pca[:,4],decimals=point_number)
 Fifth_direction_unique_entries = np.round(Fifth_data,decimals=3)
 Fifth_direction_unique_counts = np.unique(Fifth_data,return_counts=True)
 counts, bins = np.histogram(Fifth_direction_unique_entries)
-print(Fifth_direction_unique_counts)
+
 
 plt.figure()
 plt.title('Fifth Direction Histogram')
@@ -229,7 +228,7 @@ Sixth_data = np.round(all_data_pca[:,5],decimals=point_number)
 Sixth_direction_unique_entries = np.round(Sixth_data,decimals=3)
 Sixth_direction_unique_counts = np.unique(Sixth_data,return_counts=True)
 counts, bins = np.histogram(Sixth_direction_unique_entries)
-print(Sixth_direction_unique_counts)
+
 
 plt.figure()
 plt.title('Sixth Direction Histogram')
@@ -242,8 +241,7 @@ first_direction_unique_counts =  np.unique(first_data,return_index=True)
 print(first_direction_unique_counts[0])
 print(first_direction_unique_counts[1])
  
-# First Direction Graph for many dp
-#len(first_direction_unique_counts[0])
+
 
 #Finding the position for each value:
 
@@ -315,8 +313,7 @@ print(s_data.shape)
 
 s_data_2 = np.copy(s_data)
 s_class_2 = np.copy(s_class)
-l = np.array([1,2,3,4,5,6])
-l2 =  np.array([1,2,3,4,5,6])
+
 
 np.random.seed(10)
 np.random.shuffle(s_data)
@@ -330,13 +327,8 @@ np.random.shuffle(s_class_2)
 s_data == s_data_2
 s_class == s_class_2
 
-np.random.seed(10)
-np.random.shuffle(l) 
-np.random.seed(10)
-np.random.shuffle(l2)
 
-print(l)
-print(l2)
+
 
 proportion = float(len(NON_NMA_DATA)/len(NMA_DATA))
 
@@ -515,4 +507,4 @@ plt.xlabel('Polynomial Order')
 plt.ylabel('Matthew Coefficient')
 plt.grid()
 plt.scatter([1,2,3,4,5,6],[matt_poly_1,matt_poly_2,matt_poly_3,matt_poly_4,matt_poly_5,matt_poly_6])
-
+plt.show()
