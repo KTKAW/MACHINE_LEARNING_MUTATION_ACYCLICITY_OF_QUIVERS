@@ -5,9 +5,11 @@ Script to learn mutation-acyclicity of quivers (using their adjacency upper tria
 import numpy as np
 from sage.all import * 
 from sklearn import svm
-from matplotlib import pyplot as plt
-from itertools import combinations 
+from matplotlib import pyplot as plt 
 from sklearn.metrics import matthews_corrcoef
+# Save using pickle 
+import pickle
+
 
 # Define appropriate functions
 class Sequence_Iteration:
@@ -261,12 +263,17 @@ symbolic_input = var('e', n=input_dim, latex_name='e')
 
 print('Gamma IS:',gamma)
 print('INTERCEPT IS:',intercept)
+
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
 equation = 1e3*( sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)
 print(equation.expand())      
 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_6,svm_degree)
+
+# save the model using "pickle" package
+with open('model.pkl','wb') as f:
+    pickle.dump(clf_6,f)
 
 svm_degree = 5
 clf_5 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
