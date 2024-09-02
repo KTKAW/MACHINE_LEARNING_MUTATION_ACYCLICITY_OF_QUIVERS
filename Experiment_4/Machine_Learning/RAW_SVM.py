@@ -272,7 +272,7 @@ equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_6,svm_degree)
 
 # save the model using "pickle" package
-with open('model.pkl','wb') as f:
+with open('trained_svm_model.pkl','wb') as f:
     pickle.dump(clf_6,f)
 
 svm_degree = 5
