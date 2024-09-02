@@ -8,6 +8,8 @@ The script `Pretrained_Quiver_Classifier.py` then provides functionality for an 
 
 Additions: computer-assissted proof.
 
+We note many of the scripts rely on [sagemath]{https://www.sagemath.org/} kernels, which can be setup as describe in their documentation. Quivers are then represented and mutated using the [Cluster Algebra]{https://arxiv.org/abs/1102.4844} package.
+
 ------------------------------------------------------------------------
 # BibTeX Citation
 ``` 
