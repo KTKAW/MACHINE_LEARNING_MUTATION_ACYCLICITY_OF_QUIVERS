@@ -515,10 +515,100 @@ MA_LIST_OUT = MA.tolist() #Converts array of MA quivers to a list
 print('\n')
 print(f'Number of Mutation Acyclic Isomorphism Classes: {len(MA)}') #Prints Number of Mutation Acyclic Quiver Classes: 644
 print('\n')
+
 #Saves Image of MA Quivers
 for i in range(len(MA)):
     image = MA[i]
     image.save_image(f'Mutation_Acyclic_Isomorphism_Class_Picture_{i+1}.png') 
 
+
+#Proving Quivers are Acyclic 
+
+def Acyclicity_Test(quiver): 
+    '''A function which determines whether a SAGEMATH Quiver is Acyclic
+       INPUT: SAGEMATH Quiver
+       OUTPUT: Boolean
+    '''
+    quiver_b_matrix = quiver.b_matrix()
+    quiver_network = nx.from_numpy_array(np.array(quiver_b_matrix),parallel_edges=True,create_using=nx.MultiDiGraph()).copy()
+    is_Acyclic= nx.is_directed_acyclic_graph(quiver_network) #Tests if a graph is connected or not
+    return is_Acyclic
+
+def CLASS_DATA_Generation(intial_quiver, depth): 
+    '''Generates mutated quivers from an intial quiver up to some depth
+    Input: An intial Quiver from Sage Maths
+    Output:A list of mutated Quivers generated from the intial quiver up to depth "depth".
+    '''    
+    output_list = []
+    for dd in Sequence_Iteration(list(range(0,depth))): # Runs over each depth we wish to consider
+       
+        if dd == 0: #Checks if we are in the first depth run  
+            output_list.append(list((intial_quiver,-1)))
+            
+            for h in Sequence_Iteration(range(0,4)):#runs a for loop over each vertex to mutate
+                
+                newquiver = intial_quiver.mutate(h,inplace=False) #Generates a new mutated quiver, from mutation at vertex h
+                output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run.         
+            beginning_of_run = 1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
+            end_of_run = len(output_list) - 1 #set the last position in b_matrix_list that we wish to iterate over in the next isopmorphism
+        else: #Instructions for every other depth run
+            print('\n\nNEW_DEPTH_{}\n\n'.format(dd+1))
+            qs_before = output_list[beginning_of_run:end_of_run+1]
+            length = len(qs_before) 
+            print("Number of Quivers to mutate:",len(qs_before))
+            for position in range(length):#a for loop over the number of quivers from the last depth run
+                vertex_list = [0,1,2,3] #vertices in our graph
+                vertex_list_copy = vertex_list.copy()#makes a copy of the vertex_list
+                term_to_delete = qs_before[position][1]#the vertex that was mutated to generate the quiver in the previous depth iteration
+                if term_to_delete==-1:#Checks for the intial quiver in the depth
+                    continue #Does not mutate over the intial quiver, skips to the next quiver 
+                vertex_list_copy.remove(term_to_delete) #deletes the vertex that was mutated in the previous dpeth iteration
+                qs = qs_before[position][0] 
+    
+              
+                for h in Sequence_Iteration(vertex_list_copy):#Runs over mutations over each vertex 'h'
+                    newquiver = qs.mutate(h,inplace=False) #mutates the quiver at vertex h to give a new quiver  
+                    output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run. 
+                                     
+            beginning_of_run = end_of_run+1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
+            end_of_run = len(output_list) - 1 
+                          
+                       
+        print('Number of Quivers:',len(output_list))
+    print('Output_list_length:',len(output_list))
+   
+    return output_list
+
+
+#Beginning of Acyclicty Proof: 
+
+counter = 0
+Acyclic_Quivers = []
+for i in MA:
+    counter+=1
+    print(f'This is Quiver {counter}/{len(MA)}')
+    a_test=False 
+    list_of_Quivers = CLASS_DATA_Generation(i,depth=5)
+    for k in range(len(list_of_Quivers)):
+        print(f'This is Quiver {k+1} out of {len(list_of_Quivers)}')
+        quiver_to_test = list_of_Quivers[k][0]
+        a_test = Acyclicity_Test(quiver_to_test)
+        if a_test == True:
+            Acyclic_Quivers.append(counter-1)   
+            break
+        else:
+            continue         
+
+with open('Acyclic_Quivers.txt','w+') as p:
+    p.write(f'Number of Acyclic Quivers: {len(Acyclic_Quivers)}/{len(MA)}\n')
+    p.write(str(Acyclic_Quivers))
+p.close() 
+
+Bad_Quivers = np.delete(MA,Acyclic_Quivers).tolist()
+
+#Saving Diffcult to Prove Quivers
+
+with open('Diffcult_To_Prove_Quivers.pkl','wb') as fff:
+    pickle.dump(Bad_Quivers,fff)
 
 print('---'*5,'\tProgram Finished\t','---'*5)    
