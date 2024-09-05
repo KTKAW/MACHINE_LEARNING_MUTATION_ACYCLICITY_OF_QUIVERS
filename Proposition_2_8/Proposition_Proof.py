@@ -88,6 +88,53 @@ def edge_list_creator(quiver):
     return g.copy() #returns a copied version of the list  
 
 
+
+def CLASS_DATA_Generation(intial_quiver, depth): 
+    '''Generates mutated quivers from an intial quiver up to some depth
+    Input: An intial Quiver from Sage Maths
+    Output:A list of mutated Quivers generated from the intial quiver up to depth "depth".
+    '''    
+    output_list = []
+    for dd in Sequence_Iteration(list(range(0,depth))): # Runs over each depth we wish to consider
+       
+        if dd == 0: #Checks if we are in the first depth run  
+            output_list.append(list((intial_quiver,-1)))
+            
+            for h in Sequence_Iteration(range(0,4)):#runs a for loop over each vertex to mutate
+                
+                newquiver = intial_quiver.mutate(h,inplace=False) #Generates a new mutated quiver, from mutation at vertex h
+                output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run.         
+            beginning_of_run = 1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
+            end_of_run = len(output_list) - 1 #set the last position in b_matrix_list that we wish to iterate over in the next isopmorphism
+        else: #Instructions for every other depth run
+            print('\n\nNEW_DEPTH_{}\n\n'.format(dd+1))
+            qs_before = output_list[beginning_of_run:end_of_run+1]
+            length = len(qs_before) 
+            print("Number of Quivers to mutate:",len(qs_before))
+            for position in range(length):#a for loop over the number of quivers from the last depth run
+                vertex_list = [0,1,2,3] #vertices in our graph
+                vertex_list_copy = vertex_list.copy()#makes a copy of the vertex_list
+                term_to_delete = qs_before[position][1]#the vertex that was mutated to generate the quiver in the previous depth iteration
+                if term_to_delete==-1:#Checks for the intial quiver in the depth
+                    continue #Does not mutate over the intial quiver, skips to the next quiver 
+                vertex_list_copy.remove(term_to_delete) #deletes the vertex that was mutated in the previous dpeth iteration
+                qs = qs_before[position][0] 
+    
+              
+                for h in Sequence_Iteration(vertex_list_copy):#Runs over mutations over each vertex 'h'
+                    newquiver = qs.mutate(h,inplace=False) #mutates the quiver at vertex h to give a new quiver  
+                    output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run. 
+                                     
+            beginning_of_run = end_of_run+1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
+            end_of_run = len(output_list) - 1 
+                          
+                       
+        print('Number of Quivers:',len(output_list))
+    print('Output_list_length:',len(output_list))
+   
+    return output_list
+
+
 #################################################################################################
 # NON ACYCLIC QUIVER GENERATION (All Possible NMA Quivers for Our dataset)
 ################################################################################################
@@ -318,6 +365,19 @@ non_acyclic_list = [non_acyclic_1a1,non_acyclic_1a2,non_acyclic_1a3, non_acyclic
                    non_acyclic_4a7b,non_acyclic_4a7c,non_acyclic_4a8a,
                    non_acyclic_4a8b,non_acyclic_4a8c,non_acyclic_dreaded]
 
+#Extending non_acyclic_list 
+temp_list = [] #Define Temporary List
+for i in non_acyclic_list:
+    new_quivers = CLASS_DATA_Generation(i,depth=4)
+    for k in new_quivers:
+        temp_list.append(k[0])
+
+non_acyclic_list = temp_list.copy()
+temp_list.clear()
+
+
+
+
 
 def rank4genm(a=1,b=1,c=1,d=1,e=1,f=1):
     ''' A function which generates the exchange matrix for Rank 4 Quivers as an numpy array.
@@ -492,7 +552,7 @@ with open('mutation_class_list.pkl', 'rb') as f:
 print('\n')
 print(f'Number of Isomorphism Classes: {len(mutation_class_list)}') # Prints Number of Isomorphism Classes: 665
 print('\n')
-#Removes all NMA Quivers from lists2 
+#Removes all NMA Quivers from mutation_class_list
 iso_killer = [edge_list_creator(x) for x in Sequence_Iteration(non_acyclic_list)] #Converts NMA quivers to graph_tool
 get_rid = iso_finder(mutation_class_list,iso_killer) #Finds all the NMA quivers in the Isomorphism class list 
 
@@ -533,52 +593,6 @@ def Acyclicity_Test(quiver):
     quiver_network = nx.from_numpy_array(np.array(quiver_b_matrix),parallel_edges=True,create_using=nx.MultiDiGraph()).copy()
     is_Acyclic= nx.is_directed_acyclic_graph(quiver_network) #Tests if a graph is connected or not
     return is_Acyclic
-
-def CLASS_DATA_Generation(intial_quiver, depth): 
-    '''Generates mutated quivers from an intial quiver up to some depth
-    Input: An intial Quiver from Sage Maths
-    Output:A list of mutated Quivers generated from the intial quiver up to depth "depth".
-    '''    
-    output_list = []
-    for dd in Sequence_Iteration(list(range(0,depth))): # Runs over each depth we wish to consider
-       
-        if dd == 0: #Checks if we are in the first depth run  
-            output_list.append(list((intial_quiver,-1)))
-            
-            for h in Sequence_Iteration(range(0,4)):#runs a for loop over each vertex to mutate
-                
-                newquiver = intial_quiver.mutate(h,inplace=False) #Generates a new mutated quiver, from mutation at vertex h
-                output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run.         
-            beginning_of_run = 1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
-            end_of_run = len(output_list) - 1 #set the last position in b_matrix_list that we wish to iterate over in the next isopmorphism
-        else: #Instructions for every other depth run
-            print('\n\nNEW_DEPTH_{}\n\n'.format(dd+1))
-            qs_before = output_list[beginning_of_run:end_of_run+1]
-            length = len(qs_before) 
-            print("Number of Quivers to mutate:",len(qs_before))
-            for position in range(length):#a for loop over the number of quivers from the last depth run
-                vertex_list = [0,1,2,3] #vertices in our graph
-                vertex_list_copy = vertex_list.copy()#makes a copy of the vertex_list
-                term_to_delete = qs_before[position][1]#the vertex that was mutated to generate the quiver in the previous depth iteration
-                if term_to_delete==-1:#Checks for the intial quiver in the depth
-                    continue #Does not mutate over the intial quiver, skips to the next quiver 
-                vertex_list_copy.remove(term_to_delete) #deletes the vertex that was mutated in the previous dpeth iteration
-                qs = qs_before[position][0] 
-    
-              
-                for h in Sequence_Iteration(vertex_list_copy):#Runs over mutations over each vertex 'h'
-                    newquiver = qs.mutate(h,inplace=False) #mutates the quiver at vertex h to give a new quiver  
-                    output_list.append(list((newquiver,h))) #appends mutated quiver to the quiver list for this depth run. 
-                                     
-            beginning_of_run = end_of_run+1 #sets the position in b_matrix_list that we wish to iterate over from in the next isomorphism check 
-            end_of_run = len(output_list) - 1 
-                          
-                       
-        print('Number of Quivers:',len(output_list))
-    print('Output_list_length:',len(output_list))
-   
-    return output_list
-
 
 #Beginning of Acyclicty Proof: 
 
