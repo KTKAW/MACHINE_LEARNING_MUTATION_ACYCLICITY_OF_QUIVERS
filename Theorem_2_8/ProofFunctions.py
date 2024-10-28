@@ -1,4 +1,4 @@
-'''Cluster Algebra Functions used in proof of Proposition 2.8'''
+'''Cluster Algebra Functions used in proof of Theorem 2.8'''
 #Import libraries 
 #from sage import *
 import numpy as np
