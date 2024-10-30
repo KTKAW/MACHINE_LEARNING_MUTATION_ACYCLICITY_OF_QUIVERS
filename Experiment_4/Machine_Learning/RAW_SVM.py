@@ -272,8 +272,8 @@ equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_6,svm_degree)
 
 # save the model using "pickle" package
-with open('trained_svm_model.pkl','wb') as f:
-    pickle.dump(clf_6,f)
+# with open('trained_svm_model.pkl','wb') as f:
+#     pickle.dump(clf_6,f)
 
 svm_degree = 5
 clf_5 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
@@ -430,3 +430,339 @@ equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_1,svm_degree)
 
+##################################################################################
+#Higher Order Even Polynomials# 
+
+#8 
+
+svm_degree = 8
+clf_8 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_8.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_8 = matthews_corrcoef(s_class,clf_8.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_8))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_8.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_8.dual_coef_[0]
+SupportVectors = clf_8.support_vectors_
+intercept = clf_8.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_8,svm_degree)
+
+# 10
+
+svm_degree = 10
+clf_10 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_10.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_10 = matthews_corrcoef(s_class,clf_10.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_10))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_8.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_10.dual_coef_[0]
+SupportVectors = clf_10.support_vectors_
+intercept = clf_10.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_10,svm_degree)
+
+
+
+# 12
+
+svm_degree = 12
+clf_12 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_12.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_12 = matthews_corrcoef(s_class,clf_12.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_12))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_12.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_12.dual_coef_[0]
+SupportVectors = clf_12.support_vectors_
+intercept = clf_12.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_12,svm_degree)
+
+
+# 14
+
+svm_degree = 14
+clf_14 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_14.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_14 = matthews_corrcoef(s_class,clf_14.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_14))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_14.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_14.dual_coef_[0]
+SupportVectors = clf_14.support_vectors_
+intercept = clf_14.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_14,svm_degree)
+
+
+
+# 16
+
+svm_degree = 16
+clf_16 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_16.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_16 = matthews_corrcoef(s_class,clf_16.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_16))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_16.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_16.dual_coef_[0]
+SupportVectors = clf_16.support_vectors_
+intercept = clf_16.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_16,svm_degree)
+
+# 18
+
+svm_degree = 18
+clf_18 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+clf_18.fit(s_data,s_class)
+
+#Matthew 
+matt_poly_18 = matthews_corrcoef(s_class,clf_18.predict(s_data))
+print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_18))
+
+#Print the number of support vectors:
+print(f'Number of Support Vectors: {clf_18.n_support_}')
+
+#Equation properties in the embedding space
+Coefficients = clf_18.dual_coef_[0]
+SupportVectors = clf_18.support_vectors_
+intercept = clf_18.intercept_[0]
+gamma = 1./(s_data.var()*input_dim)
+
+def DecisionFunction(InputVector):
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+#Define the generic input variables
+input_dim = 6
+symbolic_input = var('e', n=input_dim, latex_name='e')
+
+#Define the symbolic equation (note where this = 0 defines the hyperplane)
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation_writer(equation.expand(),svm_degree)
+Polynomial_Length(equation,matt_poly_18,svm_degree)
+
+
+with open('trained_svm_model.pkl','wb') as f:
+    pickle.dump(clf_18,f)
+
+
+# # 20
+
+# svm_degree = 20
+# clf_20 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+# clf_20.fit(s_data,s_class)
+
+# #Matthew 
+# matt_poly_20 = matthews_corrcoef(s_class,clf_20.predict(s_data))
+# print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_20))
+
+# #Print the number of support vectors:
+# print(f'Number of Support Vectors: {clf_20.n_support_}')
+
+# #Equation properties in the embedding space
+# Coefficients = clf_20.dual_coef_[0]
+# SupportVectors = clf_20.support_vectors_
+# intercept = clf_20.intercept_[0]
+# gamma = 1./(s_data.var()*input_dim)
+
+# def DecisionFunction(InputVector):
+#     return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+# #Define the generic input variables
+# input_dim = 6
+# symbolic_input = var('e', n=input_dim, latex_name='e')
+
+# #Define the symbolic equation (note where this = 0 defines the hyperplane)
+# equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+# equation_writer(equation.expand(),svm_degree)
+# Polynomial_Length(equation,matt_poly_20,svm_degree)
+
+
+# # 22
+
+# svm_degree = 22
+# clf_22 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+# clf_22.fit(s_data,s_class)
+
+# #Matthew 
+# matt_poly_22 = matthews_corrcoef(s_class,clf_22.predict(s_data))
+# print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_22))
+
+# #Print the number of support vectors:
+# print(f'Number of Support Vectors: {clf_22.n_support_}')
+
+# #Equation properties in the embedding space
+# Coefficients = clf_22.dual_coef_[0]
+# SupportVectors = clf_22.support_vectors_
+# intercept = clf_22.intercept_[0]
+# gamma = 1./(s_data.var()*input_dim)
+
+# def DecisionFunction(InputVector):
+#     return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+# #Define the generic input variables
+# input_dim = 6
+# symbolic_input = var('e', n=input_dim, latex_name='e')
+
+# #Define the symbolic equation (note where this = 0 defines the hyperplane)
+# equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+# equation_writer(equation.expand(),svm_degree)
+# Polynomial_Length(equation,matt_poly_22,svm_degree)
+
+
+# # 24
+
+# svm_degree = 24
+# clf_24 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+# clf_24.fit(s_data,s_class)
+
+# #Matthew 
+# matt_poly_24 = matthews_corrcoef(s_class,clf_24.predict(s_data))
+# print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_24))
+
+# #Print the number of support vectors:
+# print(f'Number of Support Vectors: {clf_24.n_support_}')
+
+# #Equation properties in the embedding space
+# Coefficients = clf_24.dual_coef_[0]
+# SupportVectors = clf_24.support_vectors_
+# intercept = clf_24.intercept_[0]
+# gamma = 1./(s_data.var()*input_dim)
+
+# def DecisionFunction(InputVector):
+#     return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+# #Define the generic input variables
+# input_dim = 6
+# symbolic_input = var('e', n=input_dim, latex_name='e')
+
+# #Define the symbolic equation (note where this = 0 defines the hyperplane)
+# equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+# equation_writer(equation.expand(),svm_degree)
+# Polynomial_Length(equation,matt_poly_24,svm_degree)
+
+
+
+# # 26
+
+# svm_degree = 26
+# clf_26 = svm.SVC(kernel ='poly', C=1,degree = svm_degree,class_weight = {-1:1,1:proportion})
+# clf_26.fit(s_data,s_class)
+
+# #Matthew 
+# matt_poly_26 = matthews_corrcoef(s_class,clf_26.predict(s_data))
+# print('\t\t\t\t\t\tThe Matthews Constant is: {}'.format(matt_poly_26))
+
+# #Print the number of support vectors:
+# print(f'Number of Support Vectors: {clf_26.n_support_}')
+
+# #Equation properties in the embedding space
+# Coefficients = clf_26.dual_coef_[0]
+# SupportVectors = clf_26.support_vectors_
+# intercept = clf_26.intercept_[0]
+# gamma = 1./(s_data.var()*input_dim)
+
+# def DecisionFunction(InputVector):
+#     return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+
+
+# #Define the generic input variables
+# input_dim = 6
+# symbolic_input = var('e', n=input_dim, latex_name='e')
+
+# #Define the symbolic equation (note where this = 0 defines the hyperplane)
+# equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+# equation_writer(equation.expand(),svm_degree)
+# Polynomial_Length(equation,matt_poly_26,svm_degree)

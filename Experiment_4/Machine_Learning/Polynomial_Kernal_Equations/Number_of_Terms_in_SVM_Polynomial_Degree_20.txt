@@ -1,0 +1,3 @@
+Number of Terms: 53132
+ 
+Matthew Coefficient: 0.9088013685373486

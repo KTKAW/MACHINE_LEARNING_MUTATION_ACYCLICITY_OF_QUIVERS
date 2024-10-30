@@ -1,0 +1,3 @@
+Number of Terms: 22
+ 
+Matthew Coefficient: 0.41000069196831557
