@@ -3,7 +3,6 @@
 import numpy as np
 import pickle
 import sklearn
-from sage.calculus.var import var
 
 # Define import functions
 class Sequence_Iteration:
