@@ -40,7 +40,7 @@ def matrix_weakly_connected_check(matrix):
   
   
 # Function to define the canonical form of a matrix (lexicographically smallest)
-triu_indices = np.triu_indices(4,k=1)
+triu_indices = np.triu_indices(4, k=1)
 def find_canonical_form(matrix):
     canonical_matrix = matrix
     perms = permutations(range(4)) #...4 is hardcoded here for speed, otherwise matrix.shape[0]
@@ -115,7 +115,7 @@ def matrix_mutation(matrix, k):
 
 
 #Function to generate a matrix's quiver exchange graph
-def ExchangeGraph(init_seed,depth,max_em=np.inf):  #...input inital seed as a numpy array, and the max depth to mutate to
+def ExchangeGraph(init_seed, depth, max_em=np.inf):  #...input inital seed as a numpy array, and the max depth to mutate to
     n = init_seed.shape[0]         #...extract number of mutable variables
     seed_list, current_seeds, next_seeds, checkable_seeds = [init_seed], [], [[init_seed,0,-1]], [0,0]
     #Mutate initial seed to specified depth
@@ -154,12 +154,13 @@ def ExchangeGraph(init_seed,depth,max_em=np.inf):  #...input inital seed as a nu
 
 
 # Function to search quiver exchange graph to find acyclic or NMA-equivalence
-def EG_Search_MAChecker(init_seed,depth,NMA_mutate_set):  #...input inital seed as a numpy array, and the max depth to mutate to
+# ...also return flags for counts of the check outputs: {0 => EG exhausted, 1 => NMA-iso match, 2 => C<0, 3 => C \leq 4, 4 => n-n-n cycle}
+def EG_Search_MAChecker(init_seed, depth, NMA_mutate_set):  #...input inital seed as a numpy array, and the max depth to mutate to
     n = init_seed.shape[0]         #...extract number of mutable variables
     variable_list = list(range(n))
     seed_list = [[],[],[[init_seed,0,-1]]]
     #Mutate initial seed to specified depth
-    for d in range(1,depth+1):
+    for d in range(1, depth+1):
         seed_list = seed_list[1:]
         seed_list[0] = [find_canonical_form(seed_info[0]) for seed_info in seed_list[0]] #...put in canonical form and remove vertex info
         seed_list.append([])
@@ -172,11 +173,12 @@ def EG_Search_MAChecker(init_seed,depth,NMA_mutate_set):  #...input inital seed 
                 new_seed = matrix_mutation(seed_info[0],variable)
                 #Check for acyclicity
                 if matrix_acyclic_check(new_seed,strongly=True):
-                    return True
+                    return (True, None)
                 #Check for the Markov quiver
-                if NMA_checker(new_seed):
+                NMA_check, return_flag = NMA_checker(new_seed)
+                if NMA_check:
                     print('NMA_checker True...')
-                    return False
+                    return (False, return_flag)
                 
                 #Loop through all previous depth and new seeds in EG, check if the new seed matches any of them
                 new_test = True #...boolean to verify if the generated seed is new
@@ -205,7 +207,7 @@ def EG_Search_MAChecker(init_seed,depth,NMA_mutate_set):  #...input inital seed 
         #Check if any new seeds were generated at this depth, otherwise terminate loop
         if len(seed_list[-1]) == 0:
             print('exhausted EG...',flush=True)
-            return False #...here the full exchange graph has been produced, with no acyclic quivers!
+            return (False, 0) #...here the full exchange graph has been produced, with no acyclic quivers!
             
         #Check for isomorphism to the NMA_mutate_set set
         for matrix in seed_list[-1]: #...previous depths already checked
@@ -213,19 +215,19 @@ def EG_Search_MAChecker(init_seed,depth,NMA_mutate_set):  #...input inital seed 
                 matrix_canonical = find_canonical_form(matrix[0])
                 if np.all(matrix_canonical == nma_mutate_matrix):
                     print('NMA-isomorphism match...')
-                    return False
+                    return (False, 1)
             
         #Output progress     
         print(d,list(map(len,seed_list)),flush=True)
     
     #If reach max depth and nothing found, return none
-    return None 
+    return (None, None) 
 
 
 # Function to check for general non-mutation-acyclicity properties
 def NMA_checker(matrix):
     # Create a directed graph from the matrix
-    G = nx.from_numpy_matrix(np.clip(matrix,0,None), create_using=nx.DiGraph)
+    G = nx.from_numpy_matrix(np.clip(matrix, 0, None), create_using=nx.DiGraph)
     
     # Loop through all sets of three nodes u, v, w
     for u in G.nodes:
@@ -247,16 +249,16 @@ def NMA_checker(matrix):
                     # Compute markov constant
                     C = weight_uv**2 + weight_vw**2 + weight_wu**2 - weight_uv*weight_vw*weight_wu
                     if C < 0:
-                        return True
+                        return (True, 2)
                     
                     if C <= 4 and weight_uv >=2 and weight_vw >= 2 and weight_wu >= 2:
-                        return True
+                        return (True, 3)
 
                     # Check if all weights are the same 
                     if weight_uv < 2 or weight_vw < 2 or weight_wu < 2: 
                         continue
                     if weight_uv == weight_vw == weight_wu:
-                        return True
+                        return (True, 4)
                     
     # If no such cycle is found, return False
-    return False
+    return (False, None)

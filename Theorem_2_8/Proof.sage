@@ -167,19 +167,22 @@ print(f'Counts for (MA,NMA): {(len(MA),len(NMA))}\n',flush=True)
 print('\n# Step (8) #\n',flush=True)
 print(f'Running checks of {len(not_NMA_mutated)} matrices...',flush=True)
 undecided = []
+nma_outcome_counters = np.zeros(5)
 for matrix_idx, matrix in enumerate(not_NMA_mutated):
     print(f'Matrix {matrix_idx}:',flush=True)
-    MA_check = EG_Search_MAChecker(matrix,final_check_depth,NMA_mutate_set)
-    print(f'...outcome: {MA_check}\n',flush=True)
+    MA_check, outcome_idx = EG_Search_MAChecker(matrix,final_check_depth,NMA_mutate_set)
+    print(f'...outcome: {MA_check} ({outcome_idx})\n',flush=True)
     if MA_check == True:
         MA.append(matrix)
     elif MA_check == False:
         NMA.append(matrix)
+        nma_outcome_counters[outcome_idx] += 1
     else: 
         undecided.append(matrix)
 
 print(f'Counts for (MA,NMA): {(len(MA),len(NMA))}',flush=True)
 print(f'Number of undecided matrices: {len(undecided)}',flush=True)
+print(f'NMA outcome counts: {nma_outcome_counters}',flush=True)
 
 #Save lists to separate files
 with open('MA.txt','w') as ma_file:
