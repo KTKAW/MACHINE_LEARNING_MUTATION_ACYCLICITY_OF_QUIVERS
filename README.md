@@ -3,7 +3,7 @@ This repository contains code scripts for data generation and machine learning o
 
 ------------------------------------------------------------------------
 
-Included in this repository, within `Experiment_4/Machine_Learning/`, is the saved degree-6 kernel Support Vector Machine model that exhibited perfect test performances, `trained_svm_model.pkl`.     
+Included in this repository, within `Experiment_4/Machine_Learning/`, is the saved degree-18 kernel Support Vector Machine model that exhibited optimum test performances, `trained_svm_model.pkl`.     
 The script `Pretrained_Quiver_Classifier.py` then provides functionality for an interested reader to enter a rank 4 quiver of their choice (as an adjacency matrix), and then output the trained SVM prediction of whether it is mutation-acyclic or not.
 
 The directory `Theorem_2_8` contains scripts for the computer-assissted proof of the paper's Theorem 2.8, exhaustively classifying all isomorphism classes of quivers on 4 vertices with edge multiplicities $<3$ according to mutation-acyclicity.   
