@@ -13,5 +13,14 @@ We note many of the scripts rely on [sagemath](https://www.sagemath.org/) kernel
 ------------------------------------------------------------------------
 # BibTeX Citation
 ``` 
-Raise NotImplementedError
+@article{Armstrong-Williams:2024nzy,
+    author = "Armstrong-Williams, Kymani T. K. and Hirst, Edward and Jackson, Blake and Lee, Kyu-Hwan",
+    title = "{Machine Learning Mutation-Acyclicity of Quivers}",
+    eprint = "2411.04209",
+    archivePrefix = "arXiv",
+    primaryClass = "math.CO",
+    reportNumber = "QMUL-PH-24-27",
+    month = "11",
+    year = "2024"
+}
 ```
