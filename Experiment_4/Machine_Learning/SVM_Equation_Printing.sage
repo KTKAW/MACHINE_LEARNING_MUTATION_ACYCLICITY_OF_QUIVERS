@@ -68,15 +68,15 @@ Coefficients = svm_clf.dual_coef_[0]
 SupportVectors = svm_clf.support_vectors_
 intercept = svm_clf.intercept_[0]
 gamma = 1./(data.var()*data.shape[1])
-#svm_clf.coef0 == 0., svm_clf.gamma == 'scale'
+rho = svm_clf.coef0
 
 # Generic decision function (hyperplane where this = 0)
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 # Define the generic input variables
 symbolic_input = var('x', n=input_dim, latex_name='x')
 
 # Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept
+equation = sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree * Coefficients[j] for j in range(len(SupportVectors))]) + intercept
 print(equation.full_simplify())             
