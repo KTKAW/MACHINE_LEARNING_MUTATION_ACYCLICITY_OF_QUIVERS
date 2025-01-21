@@ -253,9 +253,10 @@ Coefficients = clf_6.dual_coef_[0]
 SupportVectors = clf_6.support_vectors_
 intercept = clf_6.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_6.coef0
 #Generic decision function (hyperplane where this = 0)
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 #Define the generic input variables
 input_dim = 6
@@ -265,7 +266,7 @@ print('Gamma IS:',gamma)
 print('INTERCEPT IS:',intercept)
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = 1e3*( sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)
+equation = 1e3*( sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)
 print(equation.expand())      
 
 equation_writer(equation.expand(),svm_degree)
@@ -293,9 +294,10 @@ Coefficients = clf_5.dual_coef_[0]
 SupportVectors = clf_5.support_vectors_
 intercept = clf_5.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_5.coef0
 #Generic decision function (hyperplane where this = 0)
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -303,7 +305,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e15
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e15
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_5,svm_degree)
 
@@ -326,9 +328,10 @@ Coefficients = clf_4.dual_coef_[0]
 SupportVectors = clf_4.support_vectors_
 intercept = clf_4.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_4.coef0
 #Generic decision function (hyperplane where this = 0)
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -336,7 +339,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e2
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e2
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_4,svm_degree)
 
@@ -356,9 +359,10 @@ Coefficients = clf_3.dual_coef_[0]
 SupportVectors = clf_3.support_vectors_
 intercept = clf_3.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_3.coef0
 #Generic decision function (hyperplane where this = 0)
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -366,7 +370,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_3,svm_degree)
 
@@ -387,8 +391,9 @@ Coefficients = clf_2.dual_coef_[0]
 SupportVectors = clf_2.support_vectors_
 intercept = clf_2.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_2.coef0
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -396,7 +401,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e2
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e2
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_2,svm_degree)
 
@@ -416,9 +421,10 @@ Coefficients = clf_1.dual_coef_[0]
 SupportVectors = clf_1.support_vectors_
 intercept = clf_1.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_1.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -426,7 +432,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_1,svm_degree)
 
@@ -451,9 +457,10 @@ Coefficients = clf_8.dual_coef_[0]
 SupportVectors = clf_8.support_vectors_
 intercept = clf_8.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_8.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -461,7 +468,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_8,svm_degree)
 
@@ -483,9 +490,10 @@ Coefficients = clf_10.dual_coef_[0]
 SupportVectors = clf_10.support_vectors_
 intercept = clf_10.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_10.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -493,7 +501,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_10,svm_degree)
 
@@ -517,9 +525,10 @@ Coefficients = clf_12.dual_coef_[0]
 SupportVectors = clf_12.support_vectors_
 intercept = clf_12.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_12.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -527,7 +536,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_12,svm_degree)
 
@@ -550,9 +559,10 @@ Coefficients = clf_14.dual_coef_[0]
 SupportVectors = clf_14.support_vectors_
 intercept = clf_14.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_14.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -560,7 +570,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_14,svm_degree)
 
@@ -584,9 +594,10 @@ Coefficients = clf_16.dual_coef_[0]
 SupportVectors = clf_16.support_vectors_
 intercept = clf_16.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_16.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -594,7 +605,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_16,svm_degree)
 
@@ -616,9 +627,10 @@ Coefficients = clf_18.dual_coef_[0]
 SupportVectors = clf_18.support_vectors_
 intercept = clf_18.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_18.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -626,7 +638,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_18,svm_degree)
 
@@ -653,9 +665,10 @@ Coefficients = clf_20.dual_coef_[0]
 SupportVectors = clf_20.support_vectors_
 intercept = clf_20.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_20.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -663,7 +676,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_20,svm_degree)
 
@@ -686,9 +699,10 @@ Coefficients = clf_22.dual_coef_[0]
 SupportVectors = clf_22.support_vectors_
 intercept = clf_22.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_22.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -696,7 +710,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_22,svm_degree)
 
@@ -719,9 +733,10 @@ Coefficients = clf_24.dual_coef_[0]
 SupportVectors = clf_24.support_vectors_
 intercept = clf_24.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_24.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -729,7 +744,7 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_24,svm_degree)
 
@@ -753,9 +768,10 @@ Coefficients = clf_26.dual_coef_[0]
 SupportVectors = clf_26.support_vectors_
 intercept = clf_26.intercept_[0]
 gamma = 1./(s_data.var()*input_dim)
+rho = clf_26.coef0
 
 def DecisionFunction(InputVector):
-    return sum([(gamma*np.dot(SupportVectors[i], InputVector))**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
+    return sum([(gamma*np.dot(SupportVectors[i], InputVector) + rho)**svm_degree * Coefficients[i] for i in range(len(Coefficients))]) + intercept
 
 
 #Define the generic input variables
@@ -763,6 +779,6 @@ input_dim = 6
 symbolic_input = var('e', n=input_dim, latex_name='e')
 
 #Define the symbolic equation (note where this = 0 defines the hyperplane)
-equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)))**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
+equation = (sum([(gamma*sum(SupportVectors[j,i]*symbolic_input[i] for i in range(input_dim)) + rho)**svm_degree*Coefficients[j] for j in range(len(SupportVectors))]) + intercept)*1e14 
 equation_writer(equation.expand(),svm_degree)
 Polynomial_Length(equation,matt_poly_26,svm_degree)
