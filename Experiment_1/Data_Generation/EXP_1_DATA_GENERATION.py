@@ -144,10 +144,13 @@ def data_writer_A4(data,name):
     save_name = file_names(types = name)+'_type_0'+'.txt' #updates save name for exchange matrix file
     save_name_cat = file_names(types =name)+'_type_0'+'_'+'cat'+'.txt'#updates save name for cat file
     save_file = open(save_name,'w')
-    save_file_cat = open(save_name_cat,'w')    
+    save_file_cat = open(save_name_cat,'w')  
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist()for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j) 
-        string_output = liststripper(toprint)
+        #toprint = array_converter(j) 
+        string_output = liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(0))
@@ -179,10 +182,13 @@ def data_writer_D4(data,name):
     save_name = file_names(types = name)+'_type_1'+'.txt' 
     save_name_cat = file_names(types =name)+'_type_1'+'_'+'cat'+'.txt'
     save_file = open(save_name,'w')
-    save_file_cat = open(save_name_cat,'w')    
+    save_file_cat = open(save_name_cat,'w')   
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist()for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j) 
-        string_output = liststripper(toprint)
+        #toprint = array_converter(j) 
+        string_output = liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(1))
@@ -215,9 +221,12 @@ def data_writer_NONACYCLIC_1(data,name):
     save_name_cat = file_names(types = name)+'_'+'_type_2'+'_'+'cat'+'.txt'
     save_file = open(save_name,'w')
     save_file_cat = open(save_name_cat,'w')
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist() for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j)
-        string_output=liststripper(toprint)
+        #toprint = array_converter(j)
+        string_output=liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(2))
@@ -250,9 +259,12 @@ def data_writer_NONACYCLIC_2(data,name):
     save_name_cat = file_names(types = name)+'_'+'_type_3'+'_'+'cat'+'.txt'
     save_file = open(save_name,'w')
     save_file_cat = open(save_name_cat,'w')
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist() for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j)
-        string_output=liststripper(toprint)
+        #toprint = array_converter(j)
+        string_output=liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(3))

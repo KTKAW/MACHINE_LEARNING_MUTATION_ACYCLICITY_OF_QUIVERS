@@ -173,9 +173,11 @@ def data_writer_ACYCLIC(data,name):
     save_name_cat = file_names(types =name)+'_type_0'+'_'+'cat'+'.txt'#updates save name for cat file
     save_file = open(save_name,'w')
     save_file_cat = open(save_name_cat,'w')    
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist()for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j) 
-        string_output = liststripper(toprint)
+        string_output = liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(0))
@@ -208,9 +210,11 @@ def data_writer_NONACYCLIC(data,name):
     save_name_cat = file_names(types = name)+'_'+'_type_1'+'_'+'cat'+'.txt' #updates save name for cat file
     save_file = open(save_name,'w')
     save_file_cat = open(save_name_cat,'w')    
+    toprint = [array_converter(j) for j in matrixlist]   
+    matrixlist = np.unique(toprint,axis = 0)
+    matrixlist = [j.tolist()for j in matrixlist] 
     for j in matrixlist: 
-        toprint = array_converter(j) 
-        string_output = liststripper(toprint)
+        string_output = liststripper(j)
         save_file.write(string_output+'\n')
         if counter == 0: 
             save_file_cat.write(str(1))
