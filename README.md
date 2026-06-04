@@ -20,6 +20,7 @@ We note many of the scripts rely on [sagemath](https://www.sagemath.org/) kernel
     archivePrefix = "arXiv",
     primaryClass = "math.CO",
     reportNumber = "QMUL-PH-24-27",
+    doi = "10.1016/j.jaca.2025.100040",
     month = "11",
     year = "2024"
 }
